@@ -28,7 +28,7 @@ public class PostController {
   }
 
   @GetMapping("/{id}")
-  public void getById(long id, HttpServletResponse response) throws IOException {
+  public void getById(@PathVariable long id, HttpServletResponse response) throws IOException {
     // TODO: deserialize request & serialize response
     response.setContentType(APPLICATION_JSON);
     final var data = service.getById(id);
@@ -47,7 +47,7 @@ public class PostController {
   }
 
   @DeleteMapping("/{id}")
-  public void removeById(long id, HttpServletResponse response) {
+  public void removeById(@PathVariable long id, HttpServletResponse response) {
     // TODO: deserialize request & serialize response
     response.setContentType(APPLICATION_JSON);
     final var gson = new Gson();
