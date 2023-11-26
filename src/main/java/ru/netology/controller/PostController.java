@@ -7,52 +7,35 @@ import ru.netology.service.PostService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.Reader;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
 public class PostController {
-  public static final String APPLICATION_JSON = "application/json";
-  private final PostService service;
 
-  public PostController(PostService service) {
-    this.service = service;
-  }
+    private final PostService service;
 
-  @GetMapping
-  public void all(HttpServletResponse response) throws IOException {
-    response.setContentType(APPLICATION_JSON);
-    final var data = service.all();
-    final var gson = new Gson();
-    response.getWriter().print(gson.toJson(data));
-  }
+    public PostController(PostService service) {
+        this.service = service;
+    }
 
-  @GetMapping("/{id}")
-  public void getById(@PathVariable long id, HttpServletResponse response) throws IOException {
-    // TODO: deserialize request & serialize response
-    response.setContentType(APPLICATION_JSON);
-    final var data = service.getById(id);
-    final var gson = new Gson();
-    response.getWriter().print(gson.toJson(data));
+    @GetMapping
+    public List<Post> all() {
+        return service.all();
+    }
 
-  }
+    @GetMapping("/{id}")
+    public Post getById(@PathVariable long id) throws IOException {
+        return service.getById(id);
+    }
 
-  @PostMapping
-  public void save(Reader body, HttpServletResponse response) throws IOException {
-    response.setContentType(APPLICATION_JSON);
-    final var gson = new Gson();
-    final var post = gson.fromJson(body, Post.class);
-    final var data = service.save(post);
-    response.getWriter().print(gson.toJson(data));
-  }
+    @PostMapping
+    public Post save(@RequestBody Post post) throws IOException {
+        return service.save(post);
+    }
 
-  @DeleteMapping("/{id}")
-  public void removeById(@PathVariable long id, HttpServletResponse response) {
-    // TODO: deserialize request & serialize response
-    response.setContentType(APPLICATION_JSON);
-    final var gson = new Gson();
-    service.removeById(id);
-    response.setStatus(HttpServletResponse.SC_OK);
-
-  }
+    @DeleteMapping("/{id}")
+    public void removeById(@PathVariable long id) {
+        service.removeById(id);
+    }
 }
